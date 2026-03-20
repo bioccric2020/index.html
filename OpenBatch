@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BIOC Summer Camp 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --blue: #1565C0;
+    --blue-mid: #1976D2;
+    --blue-light: #E3F0FC;
+    --blue-pale: #F0F6FF;
+    --ink: #111111;
+    --dark: #0D1B2A;
+    --muted: #4A5568;
+    --line: #D1DCE8;
+    --white: #ffffff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Inter', sans-serif; background: #F7F9FC; color: var(--ink); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--dark);
+    color: white;
+    padding: 52px 56px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(21,101,192,.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 1; }
+    .hero-academy {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: rgba(255,255,255,.5);
+    margin-bottom: 12px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue);
+    color: white;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(52px, 8vw, 88px);
+    line-height: 1;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .hero h1 .accent { color: var(--blue-mid); }
+  .hero-tagline {
+    font-size: 14px; color: rgba(255,255,255,.55); letter-spacing: 3px;
+    text-transform: uppercase; font-weight: 500; margin-bottom: 36px;
+  }
+  .hero-dates {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .date-chip {
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 9px 18px; border-radius: 3px;
+    font-size: 13px; font-weight: 500; letter-spacing: .3px;
+    background: rgba(255,255,255,.06);
+  }
+  .date-chip strong { color: #64B5F6; }
+
+  /* ── DEADLINE BAR ── */
+  .deadline-bar {
+    background: var(--blue);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px;
+    padding: 13px 24px;
+    font-size: 13px; font-weight: 600; letter-spacing: .5px;
+  }
+  .deadline-bar .pill {
+    background: white; color: var(--blue);
+    padding: 3px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+  }
+
+  /* ── LAYOUT ── */
+  .section { padding: 56px 56px; background: white; }
+  .section.alt { background: var(--blue-pale); }
+  .section + .section { border-top: 1px solid var(--line); }
+
+  .eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--blue);
+    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .eyebrow::before {
+    content: ''; display: block; width: 24px; height: 2px; background: var(--blue);
+  }
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: -.5px; line-height: 1.1;
+    margin-bottom: 16px; color: var(--dark);
+  }
+  .lead {
+    font-size: 15px; line-height: 1.8; color: var(--muted); max-width: 700px;
+  }
+
+  /* ── SELECTION CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px; margin-top: 32px;
+  }
+  .sel-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--blue);
+    padding: 24px 22px;
+    border-radius: 0 0 6px 6px;
+  }
+  .sel-card .ico { font-size: 26px; margin-bottom: 12px; }
+  .sel-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--dark); letter-spacing: .3px; }
+  .sel-card p { font-size: 13px; line-height: 1.65; color: var(--muted); }
+
+  /* ── GOALS ── */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px; margin-top: 28px;
+  }
+  .goal-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; line-height: 1.65; color: var(--muted);
+    padding: 14px 16px;
+    background: white; border: 1px solid var(--line); border-radius: 4px;
+  }
+  .goal-item .check {
+    min-width: 20px; height: 20px;
+    background: var(--blue); color: white;
+    border-radius: 50%; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* ── SCHEDULE ── */
+  .batch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-top: 32px;
+  }
+  @media(max-width:640px) { .batch-grid { grid-template-columns: 1fr; } }
+  .batch-card {
+    border: 1px solid var(--line);
+    border-radius: 6px; overflow: hidden; background: white;
+  }
+  .batch-card .bhead {
+    background: var(--dark); color: white;
+    padding: 13px 18px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .batch-card.selective .bhead { background: var(--blue); }
+  .batch-card .bbody { padding: 20px 18px; }
+  .batch-time {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 700; color: var(--dark); letter-spacing: -.3px;
+    margin-bottom: 6px;
+  }
+  .batch-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .tag {
+    display: inline-block; margin-top: 10px;
+    background: var(--blue-light); color: var(--blue);
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 2px; text-transform: uppercase;
+  }
+
+  /* ── MATCHES ── */
+  .match-block {
+    background: var(--dark);
+    border-radius: 8px; padding: 36px 40px;
+    display: flex; align-items: center; gap: 32px;
+    margin-top: 28px; flex-wrap: wrap; color: white;
+  }
+  .match-block .mic { font-size: 52px; }
+  .match-block h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .match-block p { font-size: 14px; opacity: .75; line-height: 1.7; max-width: 520px; }
+
+  /* ── PRICING ── */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-top: 32px;
+  }
+  .price-card {
+    border: 1.5px solid var(--line);
+    border-radius: 8px; padding: 28px 22px; text-align: center;
+    background: white; position: relative;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .price-card:hover { border-color: var(--blue); box-shadow: 0 4px 20px rgba(21,101,192,.1); }
+  .price-card.best {
+    border-color: var(--blue); border-width: 2px;
+    background: var(--blue-pale);
+  }
+  .best-label {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: var(--blue); color: white;
+    font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 14px; border-radius: 20px; white-space: nowrap;
+  }
+  .plan-type {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .sessions-tag {
+    font-size: 12px; font-weight: 600; color: var(--blue); margin-bottom: 14px;
+  }
+  .price-amount {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px; font-weight: 800; color: var(--dark); line-height: 1;
+  }
+  .price-perday {
+    font-size: 11px; color: var(--muted); margin-top: 8px;
+  }
+  hr.pdivider { border: none; border-top: 1px solid var(--line); margin: 14px 0; }
+
+  /* ── INSTALLMENTS ── */
+  .install-wrap {
+    display: flex; gap: 0; margin-top: 32px; flex-wrap: wrap;
+  }
+  .install-card {
+    flex: 1; min-width: 220px;
+    padding: 32px 28px;
+    background: white; border: 1px solid var(--line);
+  }
+  .install-card:first-child { border-radius: 8px 0 0 8px; border-right: none; }
+  .install-card:last-child { border-radius: 0 8px 8px 0; }
+  .install-n {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 56px; font-weight: 800;
+    color: var(--blue-light); line-height: 1; margin-bottom: 12px;
+  }
+  .install-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--dark); }
+  .install-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .install-due {
+    margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--blue);
+  }
+
+  /* ── CTA ── */
+  .cta {
+    background: var(--dark); color: white;
+    padding: 64px 56px; text-align: center;
+  }
+  .cta h2 { color: white; margin-bottom: 10px; }
+  .cta .lead { color: rgba(255,255,255,.6); margin: 0 auto 36px; }
+  .steps-row {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+  }
+  .step-chip {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+    padding: 12px 20px; border-radius: 4px;
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step-n {
+    background: var(--blue); width: 22px; height: 22px;
+    border-radius: 50%; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .form-btn {
+    display: inline-block;
+    background: var(--blue); color: white;
+    font-size: 15px; font-weight: 700; letter-spacing: .5px;
+    padding: 16px 44px; border-radius: 4px;
+    text-decoration: none; margin-bottom: 28px;
+    transition: background .2s;
+  }
+  .form-btn:hover { background: var(--blue-mid); }
+  .deadline-box {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 14px 36px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; color: rgba(255,255,255,.7);
+  }
+  .deadline-box strong {
+    display: block; font-size: 22px; font-weight: 700;
+    color: #64B5F6; margin-top: 4px; letter-spacing: .5px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060E18; color: rgba(255,255,255,.35);
+    padding: 24px 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    flex-wrap: wrap; font-size: 11px; letter-spacing: .5px;
+  }
+  footer img { height: 22px; filter: brightness(0) invert(1); opacity: .4; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">🏏 Open Registration</div>
+    <h1>BIOC<br/><span class="accent">Summer Camp 2026</span></h1>
+    <p class="hero-tagline">Hard Work Beats Talent</p>
+    <a href="https://forms.gle/Bt66NKn5oe2iSi8LA" style="display:inline-block;background:var(--blue);color:white;font-size:14px;font-weight:700;letter-spacing:.5px;padding:13px 32px;border-radius:4px;text-decoration:none;margin-bottom:32px;">📋 &nbsp;Register Now</a>
+    <div class="hero-dates">
+      <div class="date-chip">Start: <strong>1st April 2026</strong></div>
+      <div class="date-chip">End: <strong>17th May 2026</strong></div>
+      <div class="date-chip">Duration: <strong>47 Days</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEADLINE BAR -->
+<div class="deadline-bar">
+  ⏰ Registration Deadline:
+  <span class="pill">28th March 2026</span>
+  Confirm your spot before it's gone.
+</div>
+
+<!-- WHY SELECTED -->
+<section class="section">
+  <div class="eyebrow">About This Programme</div>
+  <h2>Training That Meets Every Player Where They Are</h2>
+  <p class="lead">This summer, BIOC opens its doors to all players — whether you are just starting out and need to build strong fundamentals, or you are ready to move ahead and sharpen advanced skills. Our coaches will work with each player at their level, ensuring every child gets the right training, the right guidance, and the best opportunity to grow this summer.</p>
+  <div class="cards-grid">
+    <div class="sel-card">
+      <div class="ico">🏏</div>
+      <h4>Starting Strong</h4>
+      <p>The first step is the most important. We ensure every new player builds the right habits, technique and love for the game from day one.</p>
+    </div>
+    <div class="sel-card">
+      <div class="ico">🧠</div>
+      <h4>For Developing Players</h4>
+      <p>Building on existing skills — refining technique, improving consistency and expanding their game.</p>
+    </div>
+    <div class="sel-card">
+      <div class="ico">⚡</div>
+      <h4>Personalised Coaching</h4>
+      <p>Every player is assessed individually — our coaches tailor training to match where each child is in their journey.</p>
+    </div>
+    <div class="sel-card">
+      <div class="ico">🎯</div>
+      <h4>Right Environment</h4>
+      <p>A structured, supportive setting where players of all levels train together and push each other to improve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section class="section alt">
+  <div class="eyebrow">Programme Goals</div>
+  <h2>What Every Player Will Gain</h2>
+  <p class="lead">Regardless of where your child is today, this summer will move them forward — technically, physically, and mentally.</p>
+  <div class="goals-grid">
+    <div class="goal-item"><span class="check">✓</span>Master core skills — batting, bowling, fielding &amp; wicketkeeping fundamentals</div>
+    <div class="goal-item"><span class="check">✓</span>Build match fitness and cricket-specific conditioning</div>
+    <div class="goal-item"><span class="check">✓</span>Develop focus, patience and on-field discipline</div>
+    <div class="goal-item"><span class="check">✓</span>Individual coaching feedback and personalised targets</div>
+    <div class="goal-item"><span class="check">✓</span>Instil practice habits and a growth mindset from an early stage</div>
+    <div class="goal-item"><span class="check">✓</span>Build confidence on and off the field through structured coaching</div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="section">
+  <div class="eyebrow">Daily Schedule</div>
+  <h2>Training Batch</h2>
+  <p class="lead">One focused morning session — structured, coached, and designed to make the most of every day this summer.</p>
+  <div style="max-width:380px;margin-top:32px;">
+    <div class="batch-card selective">
+      <div class="bhead">Morning Batch</div>
+      <div class="bbody">
+        <div class="batch-time">6:30 – 8:30 AM</div>
+        <div class="batch-desc">Daily morning session — skills, drills, and structured coaching focused entirely on building strong cricket foundations.</div>
+        <div class="tag">Daily · Mon to Sun</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- PRICING -->
+<section class="section">
+  <div class="eyebrow">Fee Structure</div>
+  <h2>Choose Your Plan</h2>
+  <p class="lead">Two plans to suit every family — same quality coaching, flexible duration.</p>
+  <div class="price-grid" style="max-width:560px;">
+    <div class="price-card best">
+      <div class="best-label">Best Value</div>
+      <div class="plan-type">Full Programme · 47 Days</div>
+      <div class="sessions-tag">1 Apr – 17 May 2026</div>
+      <div class="price-amount">₹8,000</div>
+      <hr class="pdivider"/>
+      <div class="price-perday">≈ ₹170 per day</div>
+    </div>
+    <div class="price-card">
+      <div class="plan-type">1-Month Plan · 30 Days</div>
+      <div class="sessions-tag">Flexible start date</div>
+      <div class="price-amount">₹5,000</div>
+      <hr class="pdivider"/>
+      <div class="price-perday">≈ ₹167 per day</div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALLMENTS -->
+<section class="section alt">
+  <div class="eyebrow">Easy Payments</div>
+  <h2>Pay in 2 Installments</h2>
+  <p class="lead">Split across two convenient dates so it's easier on every family.</p>
+  <div class="install-wrap">
+    <div class="install-card">
+      <div class="install-n">01</div>
+      <h4>First Installment</h4>
+      <p>50% of the total fee. Due at the time of registration confirmation to secure your spot in the camp.</p>
+      <div class="install-due">Due: At registration</div>
+    </div>
+    <div class="install-card">
+      <div class="install-n">02</div>
+      <h4>Second Installment</h4>
+      <p>Remaining 50%. Full Programme: by 1st May 2026. 1-Month Plan: by 25th April 2026.</p>
+      <div class="install-due">Due: 1st May 2026 &nbsp;/&nbsp; 25th Apr 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Start Your Summer the Right Way</h2>
+  <p class="lead">Registration is open to all players. Secure your child's spot before it fills up.</p>
+  <div class="steps-row">
+    <div class="step-chip"><span class="step-n">1</span> Fill the registration form</div>
+    <div class="step-chip"><span class="step-n">2</span> Choose your plan &amp; session</div>
+    <div class="step-chip"><span class="step-n">3</span> Pay 1st installment to confirm</div>
+  </div>
+  <a href="https://forms.gle/Bt66NKn5oe2iSi8LA" class="form-btn">📋 &nbsp; Register Now — Fill the Form</a>
+  <br/>
+  <div class="deadline-box">
+    Registration Deadline
+    <strong>28th March 2026</strong>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Bangalore Institute of Cricket &nbsp;·&nbsp; Morning Batch · Summer Camp 2026</span>
+</footer>
+
+</body>
+</html>
