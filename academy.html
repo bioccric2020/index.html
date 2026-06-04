@@ -967,65 +967,42 @@ function submitForm(){
   if(!c.checked){document.getElementById('err-consent').classList.add('show');return;}
   document.getElementById('err-consent').classList.remove('show');
 
-  // Populate Google Form hidden fields
   const fname=document.getElementById('fname').value;
   const lname=document.getElementById('lname').value;
-  document.getElementById('g-name').value=fname+' '+lname;
-  document.getElementById('g-dob').value=document.getElementById('dob').value;
-  document.getElementById('g-school').value=document.getElementById('school').value;
-  document.getElementById('g-experience').value=document.getElementById('experience').value;
-  document.getElementById('g-batch').value=BNAMES[S.batch]||'';
   const pl={weekend:'Weekend Batch',weekday:'Pro Batch (Weekday)',combo:'Combo Plan'}[S.planType]||'';
   const pd=S.planType==='weekend'?` · ${S.weekendFreq} sessions/week`:S.planType==='weekday'?` · ${S.weekdayFreq} days/week`:S.comboKey?` · ${COP[S.comboKey].name}`:'';
-  document.getElementById('g-plan').value=pl+pd;
   const sch=[];
   if(S.weekendSlots.length)sch.push(S.weekendSlots.join(' + '));
   if(S.weekdayDays.length)sch.push(S.weekdayDays.map(d=>d[0].toUpperCase()+d.slice(1)).join(', ')+' · 4:30–6:30 PM');
-  document.getElementById('g-schedule').value=sch.join(' | ');
-  document.getElementById('g-price').value='₹'+S.price.toLocaleString('en-IN')+'/month';
-  document.getElementById('g-pname').value=document.getElementById('pname').value;
-  document.getElementById('g-relation').value=document.getElementById('relation').value;
-  document.getElementById('g-wa').value=document.getElementById('whatsapp').value;
-  document.getElementById('g-altphone').value=document.getElementById('altphone').value;
-  document.getElementById('g-medical').value=document.getElementById('medical').value;
-  document.getElementById('g-photo-consent').value=document.getElementById('consent-photo').checked?'Yes':'No';
-  document.getElementById('g-wa-consent').value=document.getElementById('consent-wa').checked?'Yes':'No';
 
-  // Submit to Google Apps Script
-  // Submit via hidden form POST — most reliable cross-origin method for Apps Script
+  // Build URL-encoded form data — works reliably with Apps Script e.parameter
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmwLh-C4BhAHeAChbtfPcQoQlCtiKF8dKDR1l3vFMj5kr9vXUm2aGwp9zs9C0hUsmN/exec';
-  const payload = {
-    playerName: document.getElementById('fname').value+' '+document.getElementById('lname').value,
+  const params = new URLSearchParams({
+    playerName: fname+' '+lname,
     dob: document.getElementById('dob').value,
-    school: document.getElementById('school').value,
-    experience: document.getElementById('experience').value,
+    school: document.getElementById('school').value||'',
+    experience: document.getElementById('experience').value||'',
     batch: BNAMES[S.batch]||'',
     plan: pl+pd,
-    schedule: sch.join(' | '),
+    schedule: sch.join(' | ')||'',
     price: '₹'+S.price.toLocaleString('en-IN')+'/month',
     parentName: document.getElementById('pname').value,
     relation: document.getElementById('relation').value,
     whatsapp: document.getElementById('whatsapp').value,
-    altPhone: document.getElementById('altphone').value,
-    medical: document.getElementById('medical').value,
+    altPhone: document.getElementById('altphone').value||'',
+    medical: document.getElementById('medical').value||'',
     photoConsent: document.getElementById('consent-photo').checked?'Yes':'No',
     waConsent: document.getElementById('consent-wa').checked?'Yes':'No'
-  };
-  // Build a hidden form and POST it — bypasses no-cors limitations
-  const f = document.createElement('form');
-  f.method = 'POST';
-  f.action = APPS_SCRIPT_URL;
-  f.target = 'bioc_submit_frame';
-  const inp = document.createElement('input');
-  inp.type = 'hidden';
-  inp.name = 'data';
-  inp.value = JSON.stringify(payload);
-  f.appendChild(inp);
-  document.body.appendChild(f);
-  f.submit();
-  document.body.removeChild(f);
+  });
 
-  // Show success
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: params.toString()
+  }).catch(()=>{});
+
+  // Show success screen
   document.getElementById('step-5').classList.remove('active');
   document.getElementById('pill-5').classList.remove('active');
   document.getElementById('pill-5').classList.add('done');
