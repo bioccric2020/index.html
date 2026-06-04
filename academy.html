@@ -610,6 +610,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
             <input type="hidden" id="g-wa-consent" name="entry.1701375088">
           </form>
           <iframe name="hidden_iframe" style="display:none"></iframe>
+          <iframe name="bioc_submit_frame" style="display:none"></iframe>
           <div class="form-nav">
             <button onclick="goBack(5)" style="background:#fff;color:#334155;padding:11px 22px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;border:2px solid #d1dce8;cursor:pointer">&larr; Back</button>
             <button onclick="submitForm()" style="background:#16a34a;color:#fff;padding:11px 28px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;border:none;cursor:pointer;letter-spacing:0.5px;box-shadow:0 2px 8px rgba(22,163,74,0.35)">Submit Enrollment &#10003;</button>
@@ -991,6 +992,7 @@ function submitForm(){
   document.getElementById('g-wa-consent').value=document.getElementById('consent-wa').checked?'Yes':'No';
 
   // Submit to Google Apps Script
+  // Submit via hidden form POST — most reliable cross-origin method for Apps Script
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmwLh-C4BhAHeAChbtfPcQoQlCtiKF8dKDR1l3vFMj5kr9vXUm2aGwp9zs9C0hUsmN/exec';
   const payload = {
     playerName: document.getElementById('fname').value+' '+document.getElementById('lname').value,
@@ -1009,7 +1011,19 @@ function submitForm(){
     photoConsent: document.getElementById('consent-photo').checked?'Yes':'No',
     waConsent: document.getElementById('consent-wa').checked?'Yes':'No'
   };
-  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).catch(()=>{});
+  // Build a hidden form and POST it — bypasses no-cors limitations
+  const f = document.createElement('form');
+  f.method = 'POST';
+  f.action = APPS_SCRIPT_URL;
+  f.target = 'bioc_submit_frame';
+  const inp = document.createElement('input');
+  inp.type = 'hidden';
+  inp.name = 'data';
+  inp.value = JSON.stringify(payload);
+  f.appendChild(inp);
+  document.body.appendChild(f);
+  f.submit();
+  document.body.removeChild(f);
 
   // Show success
   document.getElementById('step-5').classList.remove('active');
