@@ -854,6 +854,18 @@ function selectFreq(type,n,el){
   renderPricing();
 }
 function toggleShantiniketan(cb){
+  const schoolField=document.getElementById('school');
+  if(cb.checked){
+    schoolField.value='Shantiniketan Educational Institute';
+    schoolField.readOnly=true;
+    schoolField.style.background='var(--bg)';
+    schoolField.style.color='var(--txt3)';
+  } else {
+    schoolField.value='';
+    schoolField.readOnly=false;
+    schoolField.style.background='var(--white)';
+    schoolField.style.color='var(--txt)';
+  }
   // Refresh plan picker if already on step 2
   if(S.planType) showFreqPicker(S.planType);
   // Reset freq selections and pricing
@@ -862,9 +874,15 @@ function toggleShantiniketan(cb){
   document.getElementById('pricing-display').style.display='none';
 }
 function checkShantiniketan(){
-  const school=document.getElementById('school').value.toLowerCase();
+  const schoolField=document.getElementById('school');
   const cb=document.getElementById('shantiniketan-check');
-  if(school.includes('shantiniketan'))cb.checked=true;
+  if(schoolField.value.toLowerCase().includes('shantiniketan')){
+    cb.checked=true;
+    schoolField.value='Shantiniketan Educational Institute';
+    schoolField.readOnly=true;
+    schoolField.style.background='var(--bg)';
+    schoolField.style.color='var(--txt3)';
+  }
 }
 
 function selectCombo(k,el){
