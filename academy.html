@@ -751,7 +751,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 // STEP: Replace this URL with your Google Form action URL
 // To get it: Open your Google Form → click ⋮ → Get pre-filled link
 // Fill all fields → click Get Link → copy the URL and paste your Form ID below
-const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf-3XYzahH98qNPN02LdfYOBtPWm8OV8H2MRDuexfEqx-AOGg/formResponse';
+// Submissions handled via Google Apps Script (see submitForm)
 
 // ── STATE ──
 let S={age:null,batch:null,planType:null,weekendFreq:null,weekdayFreq:null,comboKey:null,weekendSlots:[],weekdayDays:[],price:0,perSession:0,sessions:0};
@@ -990,11 +990,26 @@ function submitForm(){
   document.getElementById('g-photo-consent').value=document.getElementById('consent-photo').checked?'Yes':'No';
   document.getElementById('g-wa-consent').value=document.getElementById('consent-wa').checked?'Yes':'No';
 
-  // Submit to Google Sheets via fetch (no-cors)
-  const gform=document.getElementById('gform');
-  gform.action=GOOGLE_FORM_URL;
-  const formData=new FormData(gform);
-  fetch(GOOGLE_FORM_URL,{method:'POST',mode:'no-cors',body:formData}).catch(()=>{});
+  // Submit to Google Apps Script
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmwLh-C4BhAHeAChbtfPcQoQlCtiKF8dKDR1l3vFMj5kr9vXUm2aGwp9zs9C0hUsmN/exec';
+  const payload = {
+    playerName: document.getElementById('fname').value+' '+document.getElementById('lname').value,
+    dob: document.getElementById('dob').value,
+    school: document.getElementById('school').value,
+    experience: document.getElementById('experience').value,
+    batch: BNAMES[S.batch]||'',
+    plan: pl+pd,
+    schedule: sch.join(' | '),
+    price: '₹'+S.price.toLocaleString('en-IN')+'/month',
+    parentName: document.getElementById('pname').value,
+    relation: document.getElementById('relation').value,
+    whatsapp: document.getElementById('whatsapp').value,
+    altPhone: document.getElementById('altphone').value,
+    medical: document.getElementById('medical').value,
+    photoConsent: document.getElementById('consent-photo').checked?'Yes':'No',
+    waConsent: document.getElementById('consent-wa').checked?'Yes':'No'
+  };
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).catch(()=>{});
 
   // Show success
   document.getElementById('step-5').classList.remove('active');
